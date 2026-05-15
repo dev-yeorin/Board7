@@ -43,18 +43,19 @@ public class PdsController {
 		// 메뉴 목록 조회
 		List<MenuDTO>  menuList      =  menuMapper.getMenuList();    
 		
-		//  자료실 목록 조회 (10 개씩)
+		//  자료실 목록 조회 (10 개씩) - 페이징 처리 준비작업 시작		
 		//  해당 메뉴의 전체 자료수
 		int            totalCount    =  pdsMapper.count( map );  // menus_id, searchType, keyword    
 		System.out.println("totalCount:" + totalCount);
 		
+		// 현재 페이지 정보 : map { nowpage=1 }  Object -> String -> int
 		int         nowpage   =  Integer.parseInt( String.valueOf( map.get("nowpage") ) );  
-		
+				
 		// 페이징을 위한 설정
 		SearchDto      searchDto     =  new SearchDto();
 		searchDto.setPageNo( nowpage );   // 현재 페이지 설정
 		searchDto.setNumOfRows( 10 );     // 한페이지에 10줄의 자료
-		searchDto.setPageSize( 10 );      // 페이지 번호 목록
+		searchDto.setPageSize( 10 );      // 페이지 번호 목록 1 2 3 4 5 .. 9 10  > >>
 		
 		// Pagination 설정
 		Pagination    pagination  =  new Pagination(totalCount, searchDto);
@@ -65,6 +66,7 @@ public class PdsController {
 		
 		map.put("offset",    offset);
 		map.put("numOfRows", numOfRows);
+		// 페이징 처리 준비작업 종료
 		
 		System.out.println("map2:"+ map);
 		
@@ -84,45 +86,42 @@ public class PdsController {
 		
 	}
 	
-	// 글쓰기
+	// 글 쓰기
+	// /Pds/WriteForm?menu_id=MENU01&nowpage=1
 	@RequestMapping("/WriteForm")
-	public ModelAndView writeForm(
-			@RequestParam HashMap<String, Object> map ) {
+	public  ModelAndView  writeForm(
+		@RequestParam  HashMap<String, Object> map	) {
 		
-		List<MenuDTO>  menuList      =  menuMapper.getMenuList();    
-		
-		
-		// ----------------------------------
-		ModelAndView mv = new ModelAndView();
+		List<MenuDTO>  menuList  =  menuMapper.getMenuList();
+				
+		//--------------------------
+		ModelAndView   mv        =  new ModelAndView();
 		mv.setViewName("pds/write");
-		mv.addObject("menuList", menuList);
+		mv.addObject("menuList",  menuList);
+		mv.addObject("map",       map);
+		return         mv;
+	}
+	
+	
+	// 내용보기
+	// /Pds/View?idx=127&menu_id=MENU01&nowpage=3
+	@RequestMapping("/View")
+	public  ModelAndView   view(
+		@RequestParam  HashMap<String, Object>  map	) {
 		
+		// 넘겨줄 pdsDto 정보를 조회 idx
 		
-		mv.addObject("map", map);
+		// 넘겨줄 filesDto 정보를 조회 idx
 		
-		return null;
+		//-----------------------------------
+		ModelAndView   mv     =   new ModelAndView();		
+		mv.setViewName("pds/view");
+		// mv.addObject("menuList",  menuList);
+		
+		mv.addObject("map",       map);
+		return         mv;
 		
 	}
 	
-	// 내용 보기
-	@RequestMapping("/View")
-	public ModelAndView view(
-			@RequestParam HashMap<String, Object> map) {
-				
-		List<MenuDTO>  menuList      =  menuMapper.getMenuList();    
-		// 넘겨 줄 pdsDto 정보를 조회 idx
-		
-		// 넘겨 줄 filesDto 정보를 조회 idx
-
-		
-		// ----------------------------------
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("pds/view");
-		mv.addObject("menuList", menuList);
-		
-		mv.addObject("map", map);
-		
-		return mv;
-		
-	}
+	
 }

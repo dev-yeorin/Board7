@@ -104,8 +104,6 @@ WHERE
 ORDER BY
     IDX DESC;
 
-
-
 -- 멀티게시판 자료실
 CREATE  TABLE  FILES
 (
@@ -125,6 +123,15 @@ CREATE  TABLE  FILES
      REFERENCES      BOARD(IDX)  
      ON   DELETE     CASCADE
 )
+
+
+
+
+
+
+
+
+
 
 
 

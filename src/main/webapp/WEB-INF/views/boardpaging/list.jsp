@@ -129,9 +129,8 @@
 	  
 	</main>
 	
-	<!-- javascript -->
+	<!--Javascript -->
 	<script>
-	
 	  const  mnameEl    =  document.querySelector('#mname');
 	  let    menunameEl =  document.querySelector('.menu .active')
 	  mnameEl.innerHTML =  menunameEl.innerHTML;

@@ -15,10 +15,10 @@
      padding:5px 10px;
      text-align : center;
      &:nth-of-type(1) {
-        background: black;
-        color : white;
-        border:1px solid white;
-    } 
+	     background: black;
+	     color : white;
+	     border:1px solid white;
+	 } 
   }
   tr:last-child > td {
       background: white;
@@ -36,8 +36,8 @@
   }
   
   textarea {
-     width  : 100%;
-     height : 300px;
+  	width  : 100%;
+  	height : 300px;
   }
   
   #table1 {  margin-bottom : 150px; }
@@ -47,8 +47,8 @@
   <main>
     <%@include file="/WEB-INF/include/menuspaging.jsp" %>  
   
-    <h2 class="h2"><b id ="mname">${ menu_name }</b> 새 글 쓰기</h2>
-    <form  action="/BoardPaging/Write" method="post">
+    <h2 class="h2"><b id="mname">${ menu_name }</b> 게시글 수정</h2>
+    <form  action="/BoardPaging/Update" method="post">
      <input type="hidden" name="menu_id" value="${ menu_id }" />
      <input type="hidden" name="nowpage" value="${ nowpage }" />
      <table id="table1">
@@ -80,12 +80,14 @@
   
   </main>
   
-     <script>
-      const mnameEl      = document.querySelector('#mname')
-      let menunameEl     = document.querySelector('.menu .active')
-      mnameEl.innerHTML  = menunameEl.innerHTML   
-        // Javascript 코딩 : client validation
-   </script>
+    <script>
+	  const  mnameEl    =  document.querySelector('#mname');
+	  let    menunameEl =  document.querySelector('.menu .active')
+	  mnameEl.innerHTML =  menunameEl.innerHTML;
+	  
+	  // Javascript 코딩 : client validation
+	  
+	</script>
   
   
   

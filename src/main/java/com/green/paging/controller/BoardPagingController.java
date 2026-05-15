@@ -217,3 +217,21 @@ public class BoardPagingController {
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -53,6 +53,7 @@
     <h2 class="h2"><b id="mname"></b> 자료실 게시글 수정</h2>
     <form  action="/Pds/Update" method="post"
           enctype = "multipart/form-data" > 
+     <input type="hidden" name="idx" value="${ map.idx }" />
      <input type="hidden" name="menu_id" value="${ map.menu_id }" />
      <input type="hidden" name="nowpage" value="${ map.nowpage }" />
      <table id="table1">

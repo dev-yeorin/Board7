@@ -210,8 +210,7 @@ public class PdsController {
 	@RequestMapping("/UpdateForm")
 	public ModelAndView updateForm(
 			@RequestParam HashMap<String, Object> map ) {
-		
-			
+				
 			// 메뉴 목록
 			List<MenuDTO> menuList = menuMapper.getMenuList();
 			
@@ -229,6 +228,28 @@ public class PdsController {
 			
 			mv.addObject("map", map);
 			
+			
+		return mv;
+	}
+	
+	// /Pds/Update
+	// map {idx=1608, menu_id=MENU01, nowpage=1, title=aaa, content=aaaa}
+	// MultipartFile [] {upfile=(binary), upfile=(binary)}
+	@RequestMapping("/Update")
+	public ModelAndView update(
+			@RequestParam HashMap<String, Object> map,
+			@RequestParam(value="upfile") MultipartFile []   uploadfiles
+			) {
+				
+			// 필요한 정보 수정
+			pdsService.setUpdate(map, uploadfiles);
+
+			// 돌아갈 주소
+			ModelAndView mv 	   = new ModelAndView();
+			String 		loc 	   = "redirect:/pds/List"
+					+ "?menu_id=" + map.get("menu_id")
+					+ "&nowpage" + map.get("nowpage");
+			mv.setViewName("loc");		
 			
 			
 		return mv;

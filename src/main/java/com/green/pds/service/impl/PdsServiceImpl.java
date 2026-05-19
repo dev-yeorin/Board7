@@ -130,21 +130,29 @@ public class PdsServiceImpl implements PdsService {
 		
 		
 	}
+
+	// 자료실 수정
+	@Override
+	public void setUpdate(HashMap<String, Object> map, MultipartFile[] uploadfiles) {
+		
+		// 업로드 될 경로를 map 에 추가
+		map.put("uploadPath", uploadPath);
+		
+		// 업로드된 파일 저장
+		PdsFile.save(map, uploadfiles); // map (fileList 가 추가됨)
+		
+		// Files table 내 정보 저장 <- map <- fileList
+		List<FilesDto> fileList = (List<FilesDto>) map.get("filelist");
+		if(fileList.size() > 0)
+			pdsMapper.setFileWriter(map);
+		
+		// Board table 필요한 정보를 수정
+		pdsMapper.setUpdate(map);
+		
+	}
 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

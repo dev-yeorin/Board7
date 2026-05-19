@@ -115,6 +115,24 @@ public class PdsFile {
 		return   folderPath;
 	}
 
+	// 실제 파일 삭제: fileList에 있는 여러 파일
+	public static void delete(String uploadPath, List<FilesDto> fileList) {
+		
+		String path = uploadPath;		// D:/dev/springboot/data/
+		
+		fileList.forEach( ( file ) -> {
+			String      sfile = file.getSfilename();  // 실제 저장된 파일명
+			
+			File   		dfile = new File(path + sfile);
+			if(dfile.exists())
+				dfile.delete();
+		}); 
+		
+		
+	}
+	
+	
+
 }
 
 

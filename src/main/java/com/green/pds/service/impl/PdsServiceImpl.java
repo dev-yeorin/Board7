@@ -2,6 +2,7 @@ package com.green.pds.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -111,6 +112,26 @@ public class PdsServiceImpl implements PdsService {
 		return    fileInfo;
 	}
 
+	@Override
+	public void setDelete(HashMap<String, Object> map) {
+				
+		// 0. 해당 파일 정보 조회
+		List<FilesDto> fileList = pdsMapper.getFileList(map);
+		// 1. 실제 파일도 삭제 : D:/dev/springboot/data 에 있는 idx 관련 파일 삭제
+		PdsFile.delete(uploadPath, fileList);
+		
+		
+		// 2. idx 에 해당하는 파일을 삭제 : Files table에 실제 삭제된 정보를 지운다
+		// 외래키가 설정된 관계에서 삭제는 자식 레코드를 먼저 삭제해야 한다
+		pdsMapper.deleteUploadFile(map);
+		
+		// 3. idx 에 해당하는 자료실 글 삭제: Board
+		pdsMapper.setDelete(map);
+		
+		
+	}
+	
+	
 }
 
 

@@ -84,7 +84,7 @@
           <c:forEach var="file" items="${ fileList }"> 
           	<div class="text-start">
           	<a	class="aDelete"
-          		style="text-decoration:none" 
+          		style="text-decoration:none;" 
           		href="/deleteFile?file_num=${file.file_num}">❌</a>
           	<a href="/Pds/filedownload/${file.file_num}">
           	${ file.filename }

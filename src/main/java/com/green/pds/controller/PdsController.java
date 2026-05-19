@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.green.board.dto.BoardDto;
 import com.green.menus.dto.MenuDTO;
 import com.green.menus.mapper.MenuMapper;
 import com.green.paging.dto.Pagination;
@@ -203,9 +204,39 @@ public class PdsController {
 		return         mv;		
 	}
 	
+	
+	
+	// /Pds/UpdateForm?idx=1607&menu_id=MENU01&nowpage=1
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm(
+			@RequestParam HashMap<String, Object> map ) {
+		
+			
+			// 메뉴 목록
+			List<MenuDTO> menuList = menuMapper.getMenuList();
+			
+			// 수정할 Board 정보 idx 로 검색
+			PdsDto 			pds    = pdsService.getPds(map);
+			
+			// 수정할 Files 정보를 idx 로 검색
+			List<FilesDto>  fileList = pdsService.getFileList(map);
+			
+			ModelAndView mv 	   = new ModelAndView();
+			mv.setViewName("/pds/update");
+			mv.addObject("menuList", menuList);
+			mv.addObject("pds"	   ,	  pds);
+			mv.addObject("fileList", fileList);
+			
+			mv.addObject("map", map);
+			
+			
+			
+		return mv;
+	}
+	
 	//-----------------------------------------------------------------
 	// 파일다운로드
-	// 서버에서 바이너리데이터를 다운받는다 : daya 덩어리
+	// 서버에서 바이너리데이터를 다운받는다 : data 덩어리
 	//-----------------------------------------------------------------
 	// http://localhost:8080/Pds/filedownload/1  
 	@GetMapping("/filedownload/{file_num}")     // ?file_num=1

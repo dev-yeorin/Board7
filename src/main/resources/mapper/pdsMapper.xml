@@ -52,7 +52,115 @@
 		
 	
 	</select>
+	
+	<!-- setWrite : Board 에 저장  -->
+	<select  id="setWrite">
+	
+	  INSERT INTO  BOARD (
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     CONTENT,
+	     WRITER,
+	     REGDATE,
+	     HIT
+	  )
+	    VALUES (
+	     ( SELECT NVL(MAX(IDX),0)+ 1 FROM BOARD ),
+	      #{ menu_id },
+	      #{ title   },
+	      #{ content },
+	      #{ writer  },
+	     SYSDATE,
+	     0	    
+	  )	
+	
+	</select>
 
+	<!-- 
+	  setFileWriter : Files 에 insert
+	  insert all : 한번에 여러줄을 insert 할 수 있는 명령 
+	  ( SELECT NVL( MAX( FILE_NUM), 0)+1 FROM FILES ), 한번만 실행 : 무결성제약조건에러발생
+	-->
+	<insert   id="setFileWriter">
+	  	  
+	  <foreach  collection = "fileList" 
+	            item       = "file"
+	            index      = "i"
+	            open       = "INSERT ALL" 
+	            close      = "SELECT * FROM DUAL"
+	            separator  = " " >
+	  
+	    INTO  FILES   VALUES(
+	        ( SELECT NVL( MAX( FILE_NUM), 0) FROM FILES ) + #{i} + 1,
+			( SELECT MAX( IDX ) FROM BOARD  ),
+			#{ file.filename   },
+			#{ file.fileext    },
+			#{ file.sfilename  }
+	    )
+	  
+	  </foreach>  
+	  
+	</insert>
+	
+	<!-- 조회수 -->
+	<update  id="setReadCountUpdate">
+	
+	  UPDATE   BOARD
+	   SET     HIT  = HIT + 1
+	   WHERE   IDX  = #{idx}	
+		
+	</update>
+	
+	<!-- getPds : 게시글 조회 -->
+	<select  id="getPds">
+	
+	  SELECT 
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     CONTENT,
+	     WRITER,
+	     TO_CHAR( REGDATE, 'YYYY-MM-DD HH24:MI:SS')  REGDATE,
+	     HIT	  
+	   FROM     
+	     BOARD 	
+	   WHERE
+	     IDX   =  #{ idx }  
+	
+	</select>
+	
+	<!--  getFileList : dix 에 해당하는 파일 목록 -->
+	<select  id="getFileList">
+	
+	  SELECT
+	    FILE_NUM,
+		IDX,
+		FILENAME,
+		FILEEXT,
+		SFILENAME
+	  FROM
+	    FILES
+	  WHERE
+	    IDX = #{ idx }  	
+	
+	</select>
+	
+	<!--  file_num 로 파일정보를 조회 getFileInfo -->
+	<select  id="getFileInfo">
+	 
+	  SELECT
+	    FILE_NUM,
+		IDX,
+		FILENAME,
+		FILEEXT,
+		SFILENAME
+	  FROM
+	    FILES
+	  WHERE
+	    FILE_NUM = #{ file_num }
+	
+	</select> 
 	
 	
 </mapper>

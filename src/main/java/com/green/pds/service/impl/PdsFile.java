@@ -37,7 +37,7 @@ public class PdsFile {
 			// d:\\dev\\springboot\\data\\data.abc.txt	: 업로드된 파일정보	
 			// d:/dev/springboot/data/data.abc.txt         	
 			String  fileName =  
-					( orgName.lastIndexOf("\\") < 0 )   // 못찾으면 -1 
+					( orgName.lastIndexOf("\\") < 0 )   // '\' 못찾으면 -1   
 					? orgName
 					: orgName.substring( orgName.lastIndexOf("\\") + 1 ) // data.abc.txt
 					;
@@ -54,13 +54,16 @@ public class PdsFile {
 			String  folderPath  =  makeFolder(  uploadPath );
 			
 			// 파일 중복방지 :  같은 폴더에 같은 파일명을 저장하면 마지막 저장된 파일로 변경			
-			// 중복되지 않는 고유한 문자열 생성  : UUID
+			// 전세계에서 유일한 중복되지 않는 고유한 문자열 생성  : UUID
 			String  uuid        =  UUID.randomUUID().toString();    
 			
 			// 저장할 sfilename 생성
+			// File.separator : "\\". "/"
+			// saveName : 실제저장될 서버의 경로 + 생성된 날짜형 폴더명 + uuid + 파일명
 			String  saveName    =  uploadPath + File.separator
 					            +  folderPath + File.separator
 					            +  uuid       + "."  + fileName;   // 실제 저장될 파일명
+			// saveName2 : 생성된 날짜형 폴더명 + uuid + 파일명
 			String  saveName2   =  folderPath + File.separator
 					            +  uuid       + "."  + fileName;   // sfilename
 			
